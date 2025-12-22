@@ -12,5 +12,8 @@
     "multer-cloud-storage": "^4.1.0",
     "multer-storage-cloudinary": "^2.2.1",
     "router": "^2.2.0"
+  },
+    "scripts": {
+    "start": "node server.js"
   }
 }
