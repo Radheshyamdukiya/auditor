@@ -2,9 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
 
-  "engines": {
-    "node": "18.x"
-  },
+"engines": {
+  "node": ">=20.19.0"
+},
 
   "dependencies": {
     "cloudinary": "^2.8.0",
