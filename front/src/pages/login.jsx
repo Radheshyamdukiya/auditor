@@ -44,6 +44,7 @@ function Login() {
       toast.success("Login successful");
       nav("/home");
     } catch (err) {
+      console.log(err);
       const message =
         err.response?.data?.message || "Invalid email or password";
       toast.error(message);
