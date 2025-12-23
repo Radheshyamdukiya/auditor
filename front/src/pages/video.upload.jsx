@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Upload, X, FileVideo, Image as ImageIcon, CheckCircle, Loader2, Plus, AlertCircle, Trash2 } from "lucide-react";
 
-// Internal UploadCard Component - Mobile Optimized
+
 const UploadCard = ({ children, title, hint }) => (
   <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden transition-all duration-300">
     <div className="p-5 sm:p-6 bg-white">
@@ -72,7 +72,7 @@ function Video_Upload() {
   const processUploadQueue = async (queue) => {
     for (const item of queue) {
       try {
-        console.log(`🚀 Starting upload for: ${item.file.name}`); // Log start
+        console.log(`🚀 Starting upload for: ${item.file.name}`); 
 
         const file = item.file;
         const isImage = file.type.startsWith("image");
@@ -109,28 +109,26 @@ function Video_Upload() {
         
         if (!secureUrl) throw new Error("Failed to get download link from Cloudinary");
 
-        console.log(`✅ Upload success for ${item.file.name}:`, secureUrl); // Log success URL
+        console.log(`Upload success for ${item.file.name}:`, secureUrl); 
 
-        // ✅ CRITICAL FIX: Mark Success IMMEDIATELY after getting the link
+       
         updateFileState(item.id, { status: 'success', progress: 100 });
 
-        // Background Save
         try {
           await axios.post(
             `${import.meta.env.VITE_API_URL}/user/save-media`,
             { mediaUrls: [secureUrl] },
             { withCredentials: true }
           );
-          console.log(`💾 Saved to backend: ${item.file.name}`); // Log backend save
+          console.log(`💾 Saved to backend: ${item.file.name}`); 
         } catch (saveError) {
-          console.error(`⚠️ Backend Sync Error for ${item.file.name}:`, saveError); // Log backend error
-          // Only revert to error if backend save is absolutely critical
-          // For now, we assume if Cloudinary has it, it's a success for the user UI
+          console.error(`Backend Sync Error for ${item.file.name}:`, saveError);
+          
           toast.error("Saved to cloud, but sync failed.");
         }
 
       } catch (err) {
-        console.error(`🔥 Critical Upload Error for ${item.file.name}:`, err); // Log main error
+        console.error(` Critical Upload Error for ${item.file.name}:`, err);
         updateFileState(item.id, { status: 'error', progress: 0 });
         toast.error(`Upload failed: ${item.file.name}`);
       }
