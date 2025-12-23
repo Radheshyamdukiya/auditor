@@ -7,9 +7,9 @@ cloudinary.config({
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET,
 });
+const {verfy_user}=require('../middleware/user.auth');
 
-
-router.post("/upload",(req,res)=>{
+router.post("/upload",verfy_user,(req,res)=>{
 
   const timestamp = Math.round(Date.now() / 1000);
 
