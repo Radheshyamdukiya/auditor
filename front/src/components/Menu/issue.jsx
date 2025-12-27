@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, AlertCircle, CheckCircle2, MessageSquareWarning } from "lucide-react";
-import Video from "../pages/video.upload"; // Path check kar lena apne hisab se
+import Video from "../../pages/video.upload";
 
 function Issue() {
 
