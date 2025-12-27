@@ -3,18 +3,17 @@ import { ChevronDown, AlertCircle, CheckCircle2, MessageSquareWarning } from "lu
 import Video from "../pages/video.upload"; // Path check kar lena apne hisab se
 
 function Issue() {
-  // State maintain karne ke liye (Optional, agar backend connect karega tab kaam aayega)
+
   const [description, setDescription] = useState("");
   const [isEscalation, setIsEscalation] = useState(false);
   const [isSolved, setIsSolved] = useState(false);
 
   return (
     <div className="max-w-4xl mx-auto px-3 sm:px-4 py-6">
-      
-      {/* Main Card Container */}
+
       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
         
-        {/* 1. Header Section (Blue Bar like screenshot) */}
+        
         <div className="bg-indigo-600 p-4 sm:p-5 flex justify-between items-center cursor-pointer hover:bg-indigo-700 transition-colors">
           <div className="flex items-center gap-2 text-white">
             <MessageSquareWarning size={20} className="text-indigo-200" />
@@ -23,10 +22,9 @@ function Issue() {
           <ChevronDown className="text-indigo-100" size={20} />
         </div>
 
-        {/* 2. Form Content */}
         <div className="p-5 sm:p-8 space-y-6">
           
-          {/* Description Textarea */}
+          
           <div className="space-y-2">
             <label className="text-sm font-bold text-gray-700 block ml-1">
               Description of Issue
@@ -40,10 +38,9 @@ function Issue() {
             ></textarea>
           </div>
 
-          {/* Checkboxes Row */}
+          
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 border-b border-gray-100 pb-6">
-            
-            {/* Checkbox 1: Escalation */}
+        
             <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${isEscalation ? 'bg-red-50 border-red-200' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
               <div className="relative flex items-center">
                 <input 
@@ -59,7 +56,7 @@ function Issue() {
               {isEscalation && <AlertCircle size={16} className="text-red-500" />}
             </label>
 
-            {/* Checkbox 2: Solved */}
+          
             <label className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${isSolved ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
               <div className="relative flex items-center">
                 <input 
@@ -77,13 +74,13 @@ function Issue() {
 
           </div>
 
-          {/* 3. Proof Section (Using your Video Component) */}
+      
           <div className="space-y-2">
             <label className="text-sm font-bold text-gray-700 block ml-1">
               Proof (Photo/Video)
             </label>
             <div className="bg-gray-50 rounded-xl p-2 sm:p-4 border border-gray-200 border-dashed">
-              {/* Humara banaya hua Video Component yahan aayega */}
+  
               <Video />
             </div>
           </div>

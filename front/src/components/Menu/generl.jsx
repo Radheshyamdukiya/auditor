@@ -1,4 +1,4 @@
-import UploadSection from "../uploadsection";
+import UploadSection from "../usection";
 
 function General() {
   return (
