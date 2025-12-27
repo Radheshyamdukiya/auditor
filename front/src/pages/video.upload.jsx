@@ -12,7 +12,7 @@ const Card = ({ children, title }) => (
   </div>
 );
 
-function Video_Upload() {
+function Video() {
   const [fileList, setFileList] = useState([]);
   const fileInputRef = useRef(null);
 
@@ -122,7 +122,7 @@ function Video_Upload() {
             onClick={startUpload} 
             className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-lg active:scale-95 transition-all"
           >
-            Start Uploading
+            Upload
           </button>
         )}
       </div>
@@ -130,4 +130,4 @@ function Video_Upload() {
   );
 }
 
-export default Video_Upload;
+export default Video;

@@ -1,68 +1,113 @@
 import UserContex from "../../context/UserAuth";
-import { useContext } from "react";
-import Video_Upload from "./video.upload";
-
-function UploadSection({ title, subtitle }) {
-  return (
-    <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
-      <div className="mb-4">
-        <h3 className="text-sm sm:text-base font-semibold text-gray-800">
-          {title}
-        </h3>
-        <p className="text-xs sm:text-sm text-gray-500 mt-1">
-          {subtitle}
-        </p>
-      </div>
-
-      <Video_Upload />
-    </section>
-  );
-}
+import { useContext, useState } from "react";
+import General from "../components/Menu/generl";
+import Issue from "../components/Menu/issue";
+import CAfeedback from "../components/Menu/cafeedback";
+import CheckList from "../components/Menu/checklist";
+import StudentFeedback from "../components/Menu/studentfeedback";
+const fadeInStyle = {
+  animation: "fadeIn 0.4s ease-out forwards",
+};
+const styles = `
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+`;
 
 function Home() {
   const { data } = useContext(UserContex);
+  const [active, setactive] = useState(0);
+
+  const tabs = [
+    { name: "General", comp: <General /> },
+    { name: "Issue", comp: <Issue /> },
+    { name: "CA Feedback", comp: <CAfeedback /> },
+    { name: "Student Feedback", comp: <StudentFeedback/> },
+    { name: "Checklist", comp: <CheckList /> },
+  ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50/50">
+      <style>{styles}</style>
 
-    
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-base sm:text-lg font-semibold text-gray-800">
-            Welcome, <span className="text-indigo-600">{data}</span>
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <h1 className="text-lg font-bold text-gray-800 tracking-tight">
+            Welcome, <span className="text-indigo-600 font-extrabold">{data}</span>
           </h1>
-
-          <span className="text-xs sm:text-sm text-gray-500">
-            Exam Media Upload Dashboard
+          <span className="text-xs font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full w-fit">
+            Exam Media Dashboard
           </span>
         </div>
       </header>
 
-      
-      <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
+    
+      <div className="max-w-6xl mx-auto px-4 mt-6 sm:mt-8 pb-10">
+     
+        <div className="bg-white p-2 rounded-2xl border border-gray-200 shadow-sm sticky top-[73px] z-20 sm:static">
 
-        <UploadSection
-          title="Before Exam – Center Preparation"
-          subtitle="Gate charts, room charts, seating plan before exam starts."
-        />
+          <div className="flex gap-2 overflow-x-auto no-scrollbar py-1 px-1 sm:flex-wrap">
+            {tabs.map((val, idx) => {
+              const isActive = idx === active;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setactive(idx)}
+                  className={`
+                    relative px-5 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap
+                    transition-all duration-300 ease-out select-none
+                    ${
+                      isActive
+                        ? "text-white bg-indigo-600 shadow-lg shadow-indigo-200 transform scale-[1.02]"
+                        : "text-gray-600 bg-transparent hover:bg-gray-100 hover:text-indigo-600"
+                    }
+                  `}
+                >
+                  {val.name}
+                  
+                
+                  {isActive && (
+                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-white/60 rounded-full mb-1"></span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-        <UploadSection
-          title="During Exam – Monitoring Proof"
-          subtitle="Exam hall photos, invigilators, sealed question packets."
-        />
-
-   
-        <UploadSection
-          title="After Exam – Closing Evidence"
-          subtitle="Answer sheet sealing, packet submission, hall clearance."
-        />
-
-        <UploadSection
-          title="Incident / Special Case (If Any)"
-          subtitle="Any issue, incident, or exceptional situation during exam."
-        />
-
-      </main>
+       
+        <div className="mt-6">
+         
+          <div 
+            key={active} 
+            style={fadeInStyle}
+            className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm"
+          >
+            {tabs[active].comp ? (
+              tabs[active].comp
+            ) : (
+              
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <span className="text-2xl">📂</span>
+                </div>
+                <h3 className="text-gray-900 font-medium">No Data Found</h3>
+                <p className="text-gray-500 text-sm mt-1">
+                  This section is currently empty.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
