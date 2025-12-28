@@ -16,6 +16,7 @@ function All_User() {
         );
         setAuditor(res.data.list);
       } catch (err) {
+        console.log("hellow");
         console.log(err);
         console.log(err.response?.data);
       }
@@ -35,7 +36,7 @@ function All_User() {
       <header className="bg-white border-b sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <h1 className="text-lg font-bold text-indigo-600">
-            Select User
+            Admin Portal
           </h1>
           
          
