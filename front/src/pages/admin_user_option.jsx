@@ -3,9 +3,17 @@ import { useNavigate } from "react-router-dom";
 function Admin_User_Option() {
   const nav = useNavigate();
 
-  function handel_btn(e) {
-    nav(`/admin/user/${e.target.innerText.replace(' →', '')}`); 
-  }
+function handel_btn(e) {
+  let text = e.currentTarget.textContent;
+
+  text = text
+    .replace(/→/g, "")   
+    .replace(/\s+/g, " ") 
+    .trim();
+
+  nav(`/admin/user/${text}`);
+}
+
 
 
   const btnClass = "group w-full md:w-96 flex items-center justify-between px-6 py-4 bg-white border border-gray-200 rounded-xl shadow-sm text-gray-700 font-semibold text-lg hover:border-indigo-500 hover:shadow-md hover:bg-indigo-50 transition-all duration-200";

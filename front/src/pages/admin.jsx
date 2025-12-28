@@ -29,7 +29,7 @@ function Admin() {
     try {
       setLoading(true);
 
-      const res = await axios.post(
+       await axios.post(
         `${import.meta.env.VITE_API_URL}/admin/login`,
         data,
         { withCredentials: true }
@@ -51,7 +51,7 @@ function Admin() {
       <ToastContainer position="top-center" autoClose={2500} />
 
       <div className="w-full max-w-sm sm:max-w-md bg-gray-900 border border-gray-700 rounded-2xl shadow-xl p-6 sm:p-8">
-        {/* Heading */}
+      
         <h1 className="text-xl sm:text-2xl font-bold text-white text-center mb-1">
           Admin Login
         </h1>
@@ -59,9 +59,9 @@ function Admin() {
           Secure access to admin panel
         </p>
 
-        {/* Form */}
+      
         <form onSubmit={handlesubmit} className="space-y-4">
-          {/* Email */}
+    
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Email
@@ -76,7 +76,6 @@ function Admin() {
             />
           </div>
 
-          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1">
               Password
