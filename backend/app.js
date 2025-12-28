@@ -4,6 +4,7 @@ const cookie=require('cookie-parser');
 app.use(cookie());
 const dotenv = require("dotenv");
 dotenv.config();
+app.set("trust proxy", 1);
 const cors = require("cors");
 app.use(express.json()); 
 app.use(
@@ -12,7 +13,7 @@ app.use(
     credentials:true
   })
 );
-app.set("trust proxy", 1);
+
 const db=require("./db/user.db");
 db();
 
