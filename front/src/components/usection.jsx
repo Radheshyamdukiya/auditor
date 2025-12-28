@@ -12,7 +12,7 @@ function UploadSection({ title, subtitle }) {
         </p>
       </div>
 
-      <Video/>
+      <Video  title={title}  />
     </section>
   );
 }

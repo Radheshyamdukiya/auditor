@@ -4,7 +4,7 @@ const Url=require('../models/data.model');
 const {verfy_user}=require('../middleware/user.auth');
 router.get('/list',verfy_user,async(req,res)=>{
   try{
-        const { name} = req.query;
+        const { name,title} = req.query;
 
     if (!name) {
       return res.status(400).json({
@@ -12,7 +12,7 @@ router.get('/list',verfy_user,async(req,res)=>{
         message: "username required",
       });
     }
-    const users=await Url.find({name:name});
+    const users=await Url.find({name:name,title:title});
     
     if(!users){
       return   res.status(401).json({ok:false,message:"not users found"});

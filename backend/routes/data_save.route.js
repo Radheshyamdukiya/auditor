@@ -4,7 +4,7 @@ const Url_Model=require('../models/data.model');
 const {verfy_user}=require('../middleware/user.auth');
 
 router.post('/save-media' ,verfy_user , async(req, res) => {
-   const {mediaUrls}=req.body;
+   const {mediaUrls,title}=req.body;
    const name=req.user;
    const urls = Array.isArray(mediaUrls) ? mediaUrls : [mediaUrls];
    if(!mediaUrls){
@@ -13,8 +13,10 @@ router.post('/save-media' ,verfy_user , async(req, res) => {
    try{
      await Url_Model.create({
              name,
-             urls
+             urls,
+             title
       })
+      console.log(title);
       console.log("video saved");
    }
    catch(err){

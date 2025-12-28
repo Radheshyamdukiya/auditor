@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useRef } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -12,7 +13,7 @@ const Card = ({ children, title }) => (
   </div>
 );
 
-function Video() {
+function Video({title}) {
   const [fileList, setFileList] = useState([]);
   const fileInputRef = useRef(null);
 
@@ -57,7 +58,7 @@ function Video() {
         );
 
         console.log(`✅ Upload Link (${item.file.name}):`, res.data.secure_url);
-        await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { mediaUrls: [res.data.secure_url] }, { withCredentials: true });
+        await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { mediaUrls: [res.data.secure_url],title:title }, { withCredentials: true });
         return true;
       } catch (err) {
         console.error("Fail:", item.file.name, err);

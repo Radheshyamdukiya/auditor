@@ -12,7 +12,10 @@ const data_save = new mongoose.Schema({
       required: true
     }
   ],
-
+title:{
+type:String,
+required:true
+},
   createdAt: {
     type: Date,
     default: Date.now

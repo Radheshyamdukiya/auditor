@@ -24,14 +24,9 @@ function All_User() {
 
 function handlebtn(e) {
   const name = e.currentTarget.value;
-  console.log(name);
-
-  localStorage.setItem("username", name);
-  navigate("/admin/user/list", {
-    state: { name },
-  });
+   localStorage.setItem("username", name);
+  navigate("/admin/user/option");
 }
-
   
 
   return (

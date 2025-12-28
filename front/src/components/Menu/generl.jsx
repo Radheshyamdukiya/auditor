@@ -34,25 +34,19 @@ function General() {
         </div>
     
         <UploadSection
-          title="Before Exam – Center Preparation"
+          title="Before Exam"
           subtitle="Gate charts, room charts, seating plan before exam starts."
         />
 
         <UploadSection
-          title="During Exam – Monitoring Proof"
+          title="During Exam"
           subtitle="Exam hall photos, invigilators, sealed question packets."
         />
 
         <UploadSection
-          title="After Exam – Closing Evidence"
+          title="After Exam"
           subtitle="Answer sheet sealing, packet submission, hall clearance."
         />
-
-        <UploadSection
-          title="Incident / Special Case (If Any)"
-          subtitle="Any issue, incident, or exceptional situation during exam."
-        />
-
       </main>
     </div>
   );
