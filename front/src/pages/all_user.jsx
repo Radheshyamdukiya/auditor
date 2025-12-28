@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Download from "../components/download";
 
 function All_User() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ function All_User() {
     async function get_data() {
       try {
         const res = await axios.get(
-           `${import.meta.env.VITE_API_URL}/admin/user/name-list`,
+          `${import.meta.env.VITE_API_URL}/admin/user/name-list`,
           { withCredentials: true }
         );
         setAuditor(res.data.list);
@@ -22,25 +23,28 @@ function All_User() {
     get_data();
   }, []);
 
-function handlebtn(e) {
-  const name = e.currentTarget.value;
-   localStorage.setItem("username", name);
-  navigate("/admin/user/option");
-}
-  
+  function handlebtn(e) {
+    const name = e.currentTarget.value;
+    localStorage.setItem("username", name);
+    navigate("/admin/user/option");
+  }
 
   return (
     <section className="min-h-screen bg-slate-50">
-     
+
       <header className="bg-white border-b sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center">
-          <h1 className="text-lg font-semibold text-indigo-600">
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+          <h1 className="text-lg font-bold text-indigo-600">
             Select User
           </h1>
+          
+         
+          <div className="flex-shrink-0">
+            <Download />
+          </div>
         </div>
       </header>
 
-     
       <main className="max-w-6xl mx-auto px-4 py-6">
         <p className="text-sm text-slate-500 mb-5">
           Choose a user to view uploaded media
