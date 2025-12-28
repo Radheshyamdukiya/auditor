@@ -22,7 +22,7 @@ router.post('/login',async(req,res)=>{
         secure:true,
         httpOnly:true,
         maxAge: 24 * 60 * 60 * 1000,
-        sameSite:"None"
+       sameSite: "Lax",
     })
     return res.status(200).json({ok:true,message:"correct pass "});
 })

@@ -11,12 +11,12 @@ function All_User() {
     async function get_data() {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/admin/user/name-list`,
+          `/api/admin/user/name-list`,
           { withCredentials: true }
         );
         setAuditor(res.data.list);
       } catch (err) {
-        console.log("hellow");
+      
         console.log(err);
         console.log(err.response?.data);
       }
