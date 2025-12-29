@@ -17,7 +17,6 @@ router.post('/login',async(req,res)=>{
     }
 
     const token=set_user(user);
-    console.log(token);
     res.cookie('cookie',token ,{
         secure:true,
         httpOnly:true,
