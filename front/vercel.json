@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/api/:match*",
+      "source": "/user/:match*",
       "destination": "https://gentle-expression-production-3a8e.up.railway.app/:match*"
     },
     {
