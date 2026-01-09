@@ -39,8 +39,9 @@ function Login() {
         info,
         { withCredentials: true }
       );
-
-      setdata(res.data.name);
+    
+       setdata(res.data.name.name);
+      
       toast.success("Login successful");
       nav("/home");
     } catch (err) {

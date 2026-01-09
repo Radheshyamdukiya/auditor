@@ -1,6 +1,7 @@
 import UploadSection from "../usection";
 import {useState} from "react"
 import { toast, ToastContainer } from "react-toastify";
+import UserInfo from "../user_info";
 function General() {
   const [timing,settiming]=useState({
     Auditor:"",
@@ -15,17 +16,22 @@ function General() {
 
  }
 function handlesubmit(e) {
+  setshowbtn(false);
   e.preventDefault();
   console.log(timing);
   
 }
-function  showerror(params) {
-  toast.error("You are submited alrady timings ");
-  
-}
 
   return (
+
+    
+
     <div className="min-h-screen bg-gray-50">
+ 
+
+       <div>
+        <UserInfo/>
+       </div>
       <main className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-6">
 
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
@@ -56,24 +62,19 @@ function  showerror(params) {
           
 
         {
-          ! showbtn ?(
+          showbtn ?(
             <>
             <div className="flex flex-row gap-4 " > 
             
-              <button onClick={()=>setshowbtn(false)}  type="Submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all active:scale-95 shadow-md shadow-indigo-100">
+              <button type="Submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all active:scale-95 shadow-md shadow-indigo-100">
             Submit Timings
           </button>
-          
-              <button onClick={()=>setshowbtn(false)}  type="Submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-all active:scale-95 shadow-xl shadow-red-500/50">
-            Reset Timings
-          </button>
-
             </div>
             </>
           ):
           (
             <>
-              <button   onClick={()=>showerror}   disabled={!showbtn}className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all active:scale-95 shadow-md shadow-indigo-100">
+              <button disabled={showbtn} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all active:scale-95 shadow-md shadow-indigo-100">
              Timings Submited
           </button>
             

@@ -91,20 +91,8 @@ function Home() {
             style={fadeInStyle}
             className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm"
           >
-            {tabs[active].comp ? (
-              tabs[active].comp
-            ) : (
-              
-              <div className="flex flex-col items-center justify-center py-10 text-center">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <span className="text-2xl">📂</span>
-                </div>
-                <h3 className="text-gray-900 font-medium">No Data Found</h3>
-                <p className="text-gray-500 text-sm mt-1">
-                  This section is currently empty.
-                </p>
-              </div>
-            )}
+            {tabs[active].comp} 
+            
           </div>
         </div>
       </div>

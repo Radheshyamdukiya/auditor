@@ -1,4 +1,4 @@
-import List from "./userlist";
+import Link_List from "./admin_user_video";
 import All_User from "./admin_all_user";
 function Admin_home(){
 return (
