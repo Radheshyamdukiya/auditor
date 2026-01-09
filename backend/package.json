@@ -18,7 +18,8 @@
     "multer": "^2.0.2",
     "multer-cloud-storage": "^4.1.0",
     "multer-storage-cloudinary": "^2.2.1",
-    "router": "^2.2.0"
+    "router": "^2.2.0",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "node server.js"

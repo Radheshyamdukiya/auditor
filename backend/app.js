@@ -24,6 +24,7 @@ const login=require('./routes/login.route');
 const get_users=require('./routes/get_user.route');
 const user_list=require('./routes/get_user_list.route');
 const download=require('./routes/download.route');
+const user_data_upload=require('./routes/admin.user.data.upload.routes')
 app.use('/user',login);
 app.use('/user' ,upload);
 app.use('/user',data);
@@ -31,4 +32,5 @@ app.use('/admin/user',get_users)
 app.use('/admin/user',user_list);
 app.use('/admin',admin);
 app.use('/admin',download);
+app.use('/admin',user_data_upload);
 module.exports = app;

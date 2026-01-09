@@ -11,7 +11,28 @@ const user_schema=new mongoose.Schema({
     password:{
      required:true,
      type:String
+    },
+    ExamDate:{
+        required:true,
+        type:Date,
+    },
+      ExamCenter:{
+        required:true,
+        type:String,
+    },
+      State:{
+        required:true,
+        type:String,
+    },
+     City:{
+        required:true,
+        type:String,
+    },
+      Number:{
+        required:true,
+        type:String,
     }
+    
 })
 const user=mongoose.model('user',user_schema);
 module.exports=user;

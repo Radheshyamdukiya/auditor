@@ -57,7 +57,7 @@ function Video({title}) {
           }
         );
 
-        console.log(`✅ Upload Link (${item.file.name}):`, res.data.secure_url);
+        console.log(`Upload Link (${item.file.name}):`, res.data.secure_url);
         await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { mediaUrls: [res.data.secure_url],title:title }, { withCredentials: true });
         return true;
       } catch (err) {

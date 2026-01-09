@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Download from "../components/download";
-
+import User_Data_Upload from "../components/admin.user_data_upload";
+import Admin_Nev from "../components/admin_nev";
 function All_User() {
   const navigate = useNavigate();
   const [auditor, setAuditor] = useState(null);
@@ -33,18 +33,10 @@ function All_User() {
   return (
     <section className="min-h-screen bg-slate-50">
 
-      <header className="bg-white border-b sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="text-lg font-bold text-indigo-600">
-            Admin Portal
-          </h1>
-          
-         
-          <div className="flex-shrink-0">
-            <Download />
-          </div>
-        </div>
-      </header>
+    <Admin_Nev/>
+<User_Data_Upload/>
+
+
 
       <main className="max-w-6xl mx-auto px-4 py-6">
         <p className="text-sm text-slate-500 mb-5">

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-// --- Icons Components for better look ---
 const PlayIcon = () => (
   <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/40 shadow-lg">
@@ -15,7 +14,7 @@ const CloseIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 );
 
-// --- Skeleton Loader for Premium Feel ---
+
 const SkeletonLoader = () => (
   <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm animate-pulse mb-6">
     <div className="flex items-center gap-4 mb-4">
@@ -39,7 +38,6 @@ function Link_List() {
   const username = localStorage.getItem("username");
   const { title } = useParams();
 
-  // Date formatter for consistent look
   const formatDate = (dateString) => {
     if (!dateString) return "";
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -65,14 +63,12 @@ function Link_List() {
     fetchUsers();
   }, [username, title]);
 
-  // Helper functions
   const isVideo = (url) => url.match(/\.(mp4|webm|ogg)$/i) || url.includes("/video/");
   const isValidUrl = (url) => typeof url === "string" && url.startsWith("http");
 
   return (
     <section className="min-h-screen bg-gray-50 pb-12 font-sans">
       
-      {/* --- Header (Clean & Sticky) --- */}
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -81,14 +77,14 @@ function Link_List() {
             </div>
             <h1 className="text-lg font-bold text-gray-800 tracking-tight">Media Dashboard</h1>
           </div>
-          {/* Admin Tag */}
+       
           <span className="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold border border-indigo-100">
             {username || "Admin"}
           </span>
         </div>
       </header>
 
-      {/* --- Main Content --- */}
+ 
       <main className="max-w-6xl mx-auto px-4 py-8">
         
         {loading ? (
@@ -97,7 +93,7 @@ function Link_List() {
             <SkeletonLoader />
           </>
         ) : users.length === 0 ? (
-          // --- No Data Found (Beautiful UI) ---
+    
           <div className="flex flex-col items-center justify-center py-20 px-4 bg-white rounded-3xl border border-dashed border-gray-300 text-center">
             <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
               <svg className="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -114,7 +110,7 @@ function Link_List() {
                 key={idx} 
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300"
               >
-                {/* User Info Header */}
+             
                 <div className="px-5 py-4 border-b border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gray-50/30">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
@@ -127,7 +123,6 @@ function Link_List() {
                   </div>
                 </div>
 
-                {/* Media Grid */}
                 <div className="p-5">
                   {(!user.urls || user.urls.length === 0) ? (
                     <div className="text-center py-10 text-gray-400 text-sm italic">
@@ -159,7 +154,7 @@ function Link_List() {
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                               />
                             )}
-                            {/* Hover Overlay */}
+                    
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none" />
                           </div>
                         );
@@ -173,13 +168,12 @@ function Link_List() {
         )}
       </main>
 
-      {/* --- Full Screen Preview Modal --- */}
       {previewMedia && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 animate-in fade-in duration-200"
           onClick={() => setPreviewMedia(null)}
         >
-          {/* Close Button */}
+     
           <button 
             onClick={() => setPreviewMedia(null)}
             className="absolute top-5 right-5 text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all z-50 border border-white/10"
