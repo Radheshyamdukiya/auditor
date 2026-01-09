@@ -5,8 +5,6 @@ const router = express.Router();
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
-
   if (!email || !password) {
     return res.status(400).json({
       ok: false,
@@ -48,10 +46,11 @@ router.post('/login', async (req, res) => {
       sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000
     });
+ const { password:DbPassword, ...UserData } = login_user.toObject();
     return res.status(200).json({
       ok: true,
       message: "login succesfully",
-      name: login_user.name
+      name: UserData
     });
 
   } catch (err) {
