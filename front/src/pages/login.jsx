@@ -39,8 +39,8 @@ function Login() {
         info,
         { withCredentials: true }
       );
-    
-       setdata(res.data.name.name);
+      localStorage.setItem("data",JSON.stringify(res.data.UserData));
+       setdata(res.data.UserData.name);
       
       toast.success("Login successful");
       nav("/home");
