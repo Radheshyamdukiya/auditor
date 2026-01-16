@@ -25,9 +25,13 @@ const get_users=require('./routes/get_user.route');
 const user_list=require('./routes/get_user_list.route');
 const download=require('./routes/download.route');
 const user_data_upload=require('./routes/admin.user.data.upload.routes')
+const checklist=require('./routes/user_check_list.route.jsx');
+const student_feedback=require('./routes/student.feedback.route.js');
 app.use('/user',login);
 app.use('/user' ,upload);
 app.use('/user',data);
+app.use('/user',checklist); 
+app.use('/user',student_feedback);
 app.use('/admin/user',get_users)
 app.use('/admin/user',user_list);
 app.use('/admin',admin);
