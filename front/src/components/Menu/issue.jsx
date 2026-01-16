@@ -9,7 +9,7 @@ function Issue() {
   const [isSolved, setIsSolved] = useState(false);
 
   return (
-    <div className="max-w-4xl mx-auto px-3 sm:px-4 py-6">
+    <div className="max-w-4xl mx-auto  sm:px-2 py-6">
 
       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
         
