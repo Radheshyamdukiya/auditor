@@ -5,9 +5,11 @@ import Issue from "../components/Menu/issue";
 import CAfeedback from "../components/Menu/cafeedback";
 import CheckList from "../components/Menu/checklist";
 import StudentFeedback from "../components/Menu/studentfeedback";
+
 const fadeInStyle = {
   animation: "fadeIn 0.4s ease-out forwards",
 };
+
 const styles = `
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -38,6 +40,7 @@ function Home() {
     <div className="min-h-screen bg-gray-50/50">
       <style>{styles}</style>
 
+      {/* Header Section */}
       <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <h1 className="text-lg font-bold text-gray-800 tracking-tight">
@@ -49,11 +52,11 @@ function Home() {
         </div>
       </header>
 
-    
-      <div className="max-w-6xl mx-auto px-4 mt-6 sm:mt-8 pb-10">
-     
+      {/* Main Content */}
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 mt-4 sm:mt-8 pb-10"> {/* Mobile px kam kiya */}
+      
+        {/* Tabs Section */}
         <div className="bg-white p-2 rounded-2xl border border-gray-200 shadow-sm sticky top-[73px] z-20 sm:static">
-
           <div className="flex gap-2 overflow-x-auto no-scrollbar py-1 px-1 sm:flex-wrap">
             {tabs.map((val, idx) => {
               const isActive = idx === active;
@@ -72,8 +75,6 @@ function Home() {
                   `}
                 >
                   {val.name}
-                  
-                
                   {isActive && (
                     <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-white/60 rounded-full mb-1"></span>
                   )}
@@ -83,16 +84,15 @@ function Home() {
           </div>
         </div>
 
-       
-        <div className="mt-6">
-         
+        {/* Dynamic Component Render Area */}
+        <div className="mt-4 sm:mt-6">
           <div 
             key={active} 
             style={fadeInStyle}
-            className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-sm"
+            // MAIN FIX: p-6 ko p-3 kar diya mobile ke liye
+            className="bg-white border border-gray-200 rounded-2xl p-3 sm:p-8 shadow-sm"
           >
             {tabs[active].comp} 
-            
           </div>
         </div>
       </div>
