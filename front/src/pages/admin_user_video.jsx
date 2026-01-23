@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const PlayIcon = () => (
   <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/10 transition-colors">
@@ -35,9 +36,8 @@ function Link_List() {
   const [loading, setLoading] = useState(true);
   const [previewMedia, setPreviewMedia] = useState(null);
 
-  const username = localStorage.getItem("username");
-  const { title } = useParams();
-
+  const username =localStorage.getItem("username");
+  const title=useLocation().state?.title;
   const formatDate = (dateString) => {
     if (!dateString) return "";
     return new Date(dateString).toLocaleDateString('en-IN', {

@@ -5,13 +5,22 @@ function Admin_User_Option() {
 
 function handel_btn(e) {
   let text = e.currentTarget.textContent;
-
   text = text
     .replace(/→/g, "")   
     .replace(/\s+/g, " ") 
     .trim();
 
-  nav(`/admin/user/${text}`);
+  nav(`/admin/user`,
+    
+    {
+      state:{
+        title:text,
+      }
+    }
+  );
+}
+function handle_feedback(){
+ nav("/admin/user/feedback")
 }
 
 
@@ -63,6 +72,11 @@ function handel_btn(e) {
             <span className="text-gray-400 group-hover:text-indigo-600 transition-colors">→</span>
           </button>
 
+            <button onClick={handle_feedback} className={btnClass}>
+            <span>Student Feedback</span>
+            <span className="text-gray-400 group-hover:text-indigo-600 transition-colors">→</span>
+          </button>
+          
         </div>
 
       </main>

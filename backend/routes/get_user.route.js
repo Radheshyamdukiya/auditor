@@ -6,7 +6,6 @@ const { verfy_user } = require('../middleware/user.auth');
 router.get('/list', verfy_user, async (req, res) => {
   try {
     const { name, title } = req.query;
-console.log(name,title);
     if (!name) {
       return res.status(400).json({
         success: false,

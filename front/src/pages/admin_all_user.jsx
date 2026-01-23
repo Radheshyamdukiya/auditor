@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import User_Data_Upload from "../components/admin.user_data_upload";
 import Admin_Nev from "../components/admin_nev";
+
 function All_User() {
   const navigate = useNavigate();
   const [auditor, setAuditor] = useState(null);
@@ -26,15 +27,15 @@ function All_User() {
 
   function handlebtn(e) {
     const name = e.currentTarget.value;
-    localStorage.setItem("username", name);
-    navigate("/admin/user/option");
+    navigate("/admin/user/date-page");
+    localStorage.setdata("username",name);
+    
   }
 
   return (
     <section className="min-h-screen bg-slate-50">
 
-    <Admin_Nev/>
-<User_Data_Upload/>
+
 
 
 

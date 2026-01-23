@@ -19,7 +19,7 @@ router.post('/login', async (req, res) => {
     if (!login_user) {
       return res.status(401).json({
         ok: false,
-        message: "not a verfyied user or user not found"
+        message: "not a verified user or user not found"
       });
     }
 
@@ -27,7 +27,7 @@ router.post('/login', async (req, res) => {
     if (login_user.password != password) {
       return res.status(401).json({
         ok: false,
-        message: "not a verfyied user or wrong pass"
+        message: "not a verified user or wrong pass"
       });
     }
 
@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000
+       maxAge: 1000*24*60*60,
     });
  const { password:DbPassword, ...UserData } = login_user.toObject();
     return res.status(200).json({

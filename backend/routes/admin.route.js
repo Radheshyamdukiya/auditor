@@ -20,7 +20,7 @@ router.post('/login',async(req,res)=>{
     res.cookie('cookie',token ,{
         secure:true,
         httpOnly:true,
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 1000*24*60*60,
        sameSite: "Lax",
     })
     return res.status(200).json({ok:true,message:"correct pass "});
