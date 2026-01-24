@@ -16,7 +16,6 @@ router.post('/save-media' ,verfy_user , async(req, res) => {
              urls,
              title
       })
-      console.log(title);
       console.log("video saved");
    }
    catch(err){
@@ -25,5 +24,4 @@ router.post('/save-media' ,verfy_user , async(req, res) => {
 
    }
 });
-
 module.exports = router;
