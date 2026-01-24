@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/user/:match*",
-      "destination": "https://gentle-expression-production-3a8e.up.railway.app/:match*"
+      "destination": "https://auditor-ut4q.vercel.app*"
     },
     {
       "source": "/(.*)",
