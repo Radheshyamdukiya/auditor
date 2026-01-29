@@ -9,9 +9,7 @@ function Admin_Nev(){
           </h1>
           
          
-          <div className="flex-shrink-0">
-            <Download />
-          </div>
+      
         </div>
       </header>
 

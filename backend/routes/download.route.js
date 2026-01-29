@@ -7,11 +7,12 @@ router.get('/download-users',verfy_user, async (req, res) => {
     try {
        
         const data = await Url.find().lean();
+        
 
         if (!data || data.length === 0) {
             return res.status(404).json({ ok: false, message: "No data to export" });
         }
-
+       
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('All Users Data');
 

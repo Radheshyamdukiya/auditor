@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Download from "./download";
 
 function User_filter() {
   const [dates, setdates] = useState([]);
@@ -65,12 +66,20 @@ function User_filter() {
   return (
     <section className="min-h-screen bg-slate-50 py-10">
       <main className="max-w-6xl mx-auto px-4">
-        
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-slate-800">Filter Users</h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Filter candidates by Exam Date or City to view details.
-          </p>
+      
+        {/* Header Section with Flexbox for Alignment */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800">Filter Users</h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Filter candidates by Exam Date or City to view details.
+            </p>
+          </div>
+          
+          {/* Download Button Aligned to Right */}
+          <div className="flex-shrink-0">
+             <Download/>
+          </div>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 mb-8">

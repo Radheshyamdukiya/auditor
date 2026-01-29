@@ -1,8 +1,15 @@
 import axios from "axios";
-
-function Download() {
+import toast from "react-hot-toast"
+function Download({date,city}) {
   const handleDownload = async () => {
     try {
+      if(!city || !date){
+         toast.error("please select either city or date")
+         return
+      }
+
+
+
       const response = await axios({
         url: `${import.meta.env.VITE_API_URL}/admin/download-users`,
         method: 'GET',
