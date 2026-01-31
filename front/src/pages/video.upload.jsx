@@ -1,136 +1,120 @@
-/* eslint-disable no-unused-vars */
 import { useState, useRef } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { X, ImageIcon, Plus, CloudUpload } from "lucide-react";
+import { Plus, Loader2, PlayCircle, ChevronDown, CheckCircle2 } from "lucide-react";
 
-const Card = ({ children, title }) => (
-  <div className="w-full mt-2">
-    <h2 className="text-lg font-bold mb-4 flex items-center gap-2 text-gray-800">
-      <CloudUpload className="text-indigo-600" size={20} /> {title}
-    </h2>
-    {children}
-  </div>
-);
+const SUB_MAP = {
+  "Before Exam": ["Gate Chart", "Room Chart", "Seating Plan", "Staff Attendance"],
+  "During Exam": ["Exam Hall", "Invigilator Photo", "Question Paper", "Attendance Sheet"],
+  "After Exam": ["Sheet Sealing", "Packet Submission", "Hall Clearance", "Final Report"]
+};
 
-function Video({title}) {
-  const [fileList, setFileList] = useState([]);
-  const fileInputRef = useRef(null);
+function Video({ title }) {
+  const [open, setOpen] = useState(false);
+  const [activeSub, setActiveSub] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [previews, setPreviews] = useState({});
+  const fileRef = useRef(null);
+  const userData = JSON.parse(localStorage.getItem("data"));
 
-  const handleFileSelect = (e) => {
-    const files = Array.from(e.target.files).map(file => ({
-      id: Math.random().toString(36).substr(2, 9),
-      file,
-      progress: 0,
-      status: 'pending'
-    }));
-    setFileList(prev => [...prev, ...files]);
-    fileInputRef.current.value = ""; 
-  };
+  const handleFileChange = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
 
-  const startUpload = async () => {
-    const pending = fileList.filter(f => f.status === 'pending');
-    if (pending.length === 0) return;
+    setUploading(true);
+    const newPreviews = [];
+    const mediaUrls = [];
 
-    const uploadPromises = pending.map(async (item) => {
-      try {
-        setFileList(prev => prev.map(f => f.id === item.id ? { ...f, status: 'uploading' } : f));
-        const isImg = item.file.type.startsWith("image");
-        const mediaType = isImg ? "image" : "video";
-
-        const { data: sign } = await axios.post(`${import.meta.env.VITE_API_URL}/user/upload`, { type: mediaType }, { withCredentials: true });
-
+    try {
+      await Promise.all(files.map(async (file) => {
+        const type = file.type.startsWith("image") ? "image" : "video";
+        const { data: sign } = await axios.post(`${import.meta.env.VITE_API_URL}/user/upload`, { type }, { withCredentials: true });
+        
         const fd = new FormData();
-        fd.append("file", item.file);
+        fd.append("file", file);
         fd.append("api_key", sign.apiKey);
         fd.append("timestamp", sign.timestamp);
         fd.append("signature", sign.signature);
 
-        const res = await axios.post(
-          `https://api.cloudinary.com/v1_1/${sign.cloudName}/${mediaType}/upload`, 
-          fd, 
-          { 
-            onUploadProgress: (e) => {
-              const p = Math.round((e.loaded * 100) / e.total);
-              setFileList(prev => prev.map(f => f.id === item.id ? { ...f, progress: p } : f));
-            }
-          }
-        );
+        const res = await axios.post(`https://api.cloudinary.com/v1_1/${sign.cloudName}/${type}/upload`, fd);
+        mediaUrls.push(res.data.secure_url);
+        newPreviews.push({ url: res.data.secure_url, type });
+      }));
 
-        console.log(`Upload Link (${item.file.name}):`, res.data.secure_url);
-        await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { mediaUrls: [res.data.secure_url],title:title }, { withCredentials: true });
-        return true;
-      } catch (err) {
-        console.error("Fail:", item.file.name, err);
-        return false;
-      }
-    });
+      await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { 
+        mediaUrls,title, Sub_title: activeSub, City: userData?.City, Date: userData?.ExamDate 
+      }, { withCredentials: true });
 
-    await Promise.all(uploadPromises);
-    toast.success("Success! List cleared.");
-    
-    setTimeout(() => {
-      setFileList([]);
-    }, 800); 
+      setPreviews(prev => ({
+        ...prev,
+        [activeSub]: [...(prev[activeSub] || []), ...newPreviews]
+      }));
+      toast.success("Uploaded successfully");
+
+    } catch (err) {
+      toast.error("Upload failed");
+    } finally {
+      setUploading(false);
+      fileRef.current.value = "";
+    }
   };
 
+  const subCategories = SUB_MAP[title] || [];
+  const hasAnyPreview = subCategories.some(s => previews[s]?.length > 0);
+
   return (
-    <Card title="Media Upload">
-      <div className="flex flex-col gap-4">
-       
-        <div 
-          onClick={() => fileInputRef.current.click()} 
-          className="w-full border-2 border-dashed border-indigo-200 bg-indigo-50/50 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-indigo-50 hover:border-indigo-400 transition-all duration-200 group"
-        >
-          <div className="p-3 bg-white rounded-full shadow-sm mb-3 group-hover:scale-110 transition-transform">
-            <Plus className="text-indigo-600" size={24} />
-          </div>
-          <span className="text-sm font-semibold text-gray-600 text-center">Tap to add images/videos</span>
-          <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileSelect} />
+    <div className={`w-full border rounded-2xl overflow-hidden bg-white shadow-sm transition-all duration-300 ${hasAnyPreview ? "border-indigo-100" : "border-gray-100"}`}>
+      <div 
+        onClick={() => setOpen(!open)}
+        className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-gray-800">{title}</span>
+          {hasAnyPreview && <CheckCircle2 size={18} className="text-green-500 animate-in fade-in" />}
         </div>
-
-       
-        <div className="flex flex-col gap-3 max-h-[300px] overflow-y-auto custom-scrollbar">
-          {fileList.map(f => (
-            <div key={f.id} className="relative p-3 border border-gray-100 rounded-xl bg-gray-50/50">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="p-2 bg-white rounded-lg border border-gray-100">
-                    <ImageIcon size={18} className="text-indigo-500 shrink-0" />
-                  </div>
-                  <span className="text-sm font-medium truncate text-gray-700">
-                    {f.file.name}
-                  </span>
-                </div>
-                <button 
-                  onClick={() => setFileList(prev => prev.filter(x => x.id !== f.id))}
-                  className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg transition-all"
-                >
-                  <X size={16} className="text-gray-400 hover:text-red-500" />
-                </button>
-              </div>
-
-           
-              <div className="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-indigo-500 transition-all duration-300 rounded-full" 
-                  style={{ width: `${f.progress}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {fileList.length > 0 && (
-          <button 
-            onClick={startUpload} 
-            className="w-full py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 shadow-lg shadow-indigo-200 active:scale-95 transition-all"
-          >
-            Upload Files
-          </button>
-        )}
+        <ChevronDown className={`transition-transform duration-300 text-gray-400 ${open ? "rotate-180" : ""}`} />
       </div>
-    </Card>
+
+      {open && (
+        <div className="p-4 bg-gray-50/50 border-t border-gray-100 animate-in slide-in-from-top-2 duration-300">
+          <input ref={fileRef} type="file" multiple className="hidden" onChange={handleFileChange} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {subCategories.map(s => {
+              const isDone = previews[s]?.length > 0;
+              return (
+                <div key={s} className="space-y-2 group">
+                  <button
+                    onClick={() => { setActiveSub(s); fileRef.current.click(); }}
+                    disabled={uploading}
+                    className={`w-full flex items-center justify-between p-3 rounded-xl border text-sm font-semibold transition-all duration-200 active:scale-95 ${
+                      isDone ? "bg-green-50 border-green-200 text-green-700" : "bg-white border-gray-200 text-gray-600 hover:border-indigo-400 hover:shadow-sm"
+                    }`}
+                  >
+                    {s}
+                    {uploading && activeSub === s ? <Loader2 className="animate-spin text-indigo-600" size={18} /> : 
+                     isDone ? <CheckCircle2 size={18} className="text-green-600" /> : <Plus size={18} className="text-gray-400 group-hover:text-indigo-500" />}
+                  </button>
+                  
+                  {isDone && (
+                    <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-1">
+                      {previews[s].map((prev, idx) => (
+                        <div key={idx} className="relative h-12 w-12 rounded-lg overflow-hidden border border-gray-200 bg-black flex items-center justify-center shrink-0 hover:scale-110 transition-transform">
+                          {prev.type === "image" ? (
+                            <img src={prev.url} className="w-full h-full object-cover" alt="preview" />
+                          ) : (
+                            <PlayCircle size={20} className="text-white/80" />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

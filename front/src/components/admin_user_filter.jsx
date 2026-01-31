@@ -67,7 +67,7 @@ function User_filter() {
     <section className="min-h-screen bg-slate-50 py-10">
       <main className="max-w-6xl mx-auto px-4">
       
-        {/* Header Section with Flexbox for Alignment */}
+      
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-slate-800">Filter Users</h1>
@@ -76,9 +76,8 @@ function User_filter() {
             </p>
           </div>
           
-          {/* Download Button Aligned to Right */}
           <div className="flex-shrink-0">
-             <Download/>
+             <Download  city={c_city} date={c_dates}  />
           </div>
         </div>
 

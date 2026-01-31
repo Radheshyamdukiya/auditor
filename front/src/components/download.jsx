@@ -3,19 +3,24 @@ import toast from "react-hot-toast"
 function Download({date,city}) {
   const handleDownload = async () => {
     try {
-      if(!city || !date){
+      console.log(city,date);
+      if(!city && !date){
          toast.error("please select either city or date")
          return
       }
+      
 
 
 
-      const response = await axios({
-        url: `${import.meta.env.VITE_API_URL}/admin/download-users`,
-        method: 'GET',
-        responseType: 'blob',
-        withCredentials: true,
-      });
+const response = await axios.get(
+  `${import.meta.env.VITE_API_URL}/admin/download-users`,
+  {
+    responseType: 'blob',
+    withCredentials: true,
+    params:{date,city}
+  }
+);
+
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -23,12 +28,11 @@ function Download({date,city}) {
       link.setAttribute('download', 'UsersData.xlsx');
       document.body.appendChild(link);
       link.click();
-      
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Download fail!", error);
-      alert("Download nahi ho paya!");
+      alert("Download nahi ho paya! or No Data Found");
     }
   };
 

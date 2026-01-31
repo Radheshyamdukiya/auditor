@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import User_Data_Upload from "../components/admin.user_data_upload";
-import Admin_Nev from "../components/admin_nev";
 
 function All_User() {
   const navigate = useNavigate();

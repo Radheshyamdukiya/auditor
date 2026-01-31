@@ -7,8 +7,6 @@ function Admin_Nev(){
           <h1 className="text-lg font-bold text-indigo-600">
             Admin Portal
           </h1>
-          
-         
       
         </div>
       </header>
