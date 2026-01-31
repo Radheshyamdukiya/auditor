@@ -16,7 +16,6 @@ app.use(
 
 const db=require("./db/user.db");
 db();
-
 const admin=require('./routes/admin.route');
 const data=require('./routes/data_save.route')
 const upload=require('./routes/upload.route');
