@@ -1,8 +1,8 @@
 import Video from "../pages/video.upload";
 
-function UploadSection({ title}) {
+function UploadSection({ title }) {
   return (
-    <section className="mb-6 p-4 sm:px-0">
+    <section className="mb-4 sm:mb-6 px-0 sm:px-2">
       <Video title={title} />
     </section>
   );

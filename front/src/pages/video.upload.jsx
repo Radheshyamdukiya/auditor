@@ -20,39 +20,29 @@ function Video({ title }) {
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
-
     setUploading(true);
     const newPreviews = [];
     const mediaUrls = [];
-
     try {
       await Promise.all(files.map(async (file) => {
         const type = file.type.startsWith("image") ? "image" : "video";
         const { data: sign } = await axios.post(`${import.meta.env.VITE_API_URL}/user/upload`, { type }, { withCredentials: true });
-        
         const fd = new FormData();
         fd.append("file", file);
         fd.append("api_key", sign.apiKey);
         fd.append("timestamp", sign.timestamp);
         fd.append("signature", sign.signature);
-
         const res = await axios.post(`https://api.cloudinary.com/v1_1/${sign.cloudName}/${type}/upload`, fd);
         mediaUrls.push(res.data.secure_url);
         newPreviews.push({ url: res.data.secure_url, type });
       }));
-
       await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { 
-        mediaUrls,title, Sub_title: activeSub, City: userData?.City, Date: userData?.ExamDate 
+        mediaUrls, title, Sub_title: activeSub, City: userData?.City, Date: userData?.ExamDate 
       }, { withCredentials: true });
-
-      setPreviews(prev => ({
-        ...prev,
-        [activeSub]: [...(prev[activeSub] || []), ...newPreviews]
-      }));
-      toast.success("Uploaded successfully");
-
+      setPreviews(prev => ({ ...prev, [activeSub]: [...(prev[activeSub] || []), ...newPreviews] }));
+      toast.success("Uploaded");
     } catch (err) {
-      toast.error("Upload failed");
+      toast.error("Failed");
     } finally {
       setUploading(false);
       fileRef.current.value = "";
@@ -66,43 +56,45 @@ function Video({ title }) {
     <div className={`w-full border rounded-2xl overflow-hidden bg-white shadow-sm transition-all duration-300 ${hasAnyPreview ? "border-indigo-100" : "border-gray-100"}`}>
       <div 
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        className="flex items-center justify-between p-3.5 cursor-pointer hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-2">
-          <span className="font-bold text-gray-800">{title}</span>
-          {hasAnyPreview && <CheckCircle2 size={18} className="text-green-500 animate-in fade-in" />}
+          <span className="font-bold text-gray-800 text-sm sm:text-base">{title}</span>
+          {hasAnyPreview && <CheckCircle2 size={16} className="text-green-500" />}
         </div>
-        <ChevronDown className={`transition-transform duration-300 text-gray-400 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown size={18} className={`transition-transform duration-300 text-gray-400 ${open ? "rotate-180" : ""}`} />
       </div>
 
       {open && (
-        <div className="p-4 bg-gray-50/50 border-t border-gray-100 animate-in slide-in-from-top-2 duration-300">
+        <div className="px-3 pb-3 bg-gray-50/30 border-t border-gray-50 animate-in fade-in duration-300">
           <input ref={fileRef} type="file" multiple className="hidden" onChange={handleFileChange} />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3">
             {subCategories.map(s => {
               const isDone = previews[s]?.length > 0;
               return (
-                <div key={s} className="space-y-2 group">
+                <div key={s} className="flex flex-col gap-1.5">
                   <button
                     onClick={() => { setActiveSub(s); fileRef.current.click(); }}
                     disabled={uploading}
-                    className={`w-full flex items-center justify-between p-3 rounded-xl border text-sm font-semibold transition-all duration-200 active:scale-95 ${
-                      isDone ? "bg-green-50 border-green-200 text-green-700" : "bg-white border-gray-200 text-gray-600 hover:border-indigo-400 hover:shadow-sm"
+                    className={`w-full flex items-center justify-between p-2.5 rounded-xl border text-[13px] font-bold transition-all active:scale-[0.98] ${
+                      isDone ? "bg-green-50 border-green-200 text-green-700" : "bg-white border-gray-200 text-gray-600 shadow-sm"
                     }`}
                   >
-                    {s}
-                    {uploading && activeSub === s ? <Loader2 className="animate-spin text-indigo-600" size={18} /> : 
-                     isDone ? <CheckCircle2 size={18} className="text-green-600" /> : <Plus size={18} className="text-gray-400 group-hover:text-indigo-500" />}
+                    <span className="truncate pr-2">{s}</span>
+                    <div className="shrink-0">
+                      {uploading && activeSub === s ? <Loader2 className="animate-spin text-indigo-600" size={16} /> : 
+                       isDone ? <CheckCircle2 size={16} className="text-green-600" /> : <Plus size={16} className="text-gray-400" />}
+                    </div>
                   </button>
                   
                   {isDone && (
-                    <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-top-1">
+                    <div className="flex flex-wrap gap-1.5 px-1 pb-1">
                       {previews[s].map((prev, idx) => (
-                        <div key={idx} className="relative h-12 w-12 rounded-lg overflow-hidden border border-gray-200 bg-black flex items-center justify-center shrink-0 hover:scale-110 transition-transform">
+                        <div key={idx} className="relative h-10 w-10 rounded-lg overflow-hidden border border-gray-100 bg-black flex items-center justify-center shrink-0">
                           {prev.type === "image" ? (
-                            <img src={prev.url} className="w-full h-full object-cover" alt="preview" />
+                            <img src={prev.url} className="w-full h-full object-cover" alt="" />
                           ) : (
-                            <PlayCircle size={20} className="text-white/80" />
+                            <PlayCircle size={16} className="text-white/80" />
                           )}
                         </div>
                       ))}
