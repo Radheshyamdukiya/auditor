@@ -66,7 +66,7 @@ function Video({ title }) {
     <div className={`w-full border rounded-2xl overflow-hidden bg-white shadow-sm transition-all duration-300 ${hasAnyPreview ? "border-indigo-100" : "border-gray-100"}`}>
       <div 
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        className="flex items-center justify-between p-2 cursor-pointer hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-2">
           <span className="font-bold text-gray-800">{title}</span>
