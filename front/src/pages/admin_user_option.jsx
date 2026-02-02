@@ -72,6 +72,11 @@ function handle_feedback(){
             <span className="text-gray-400 group-hover:text-indigo-600 transition-colors">→</span>
           </button>
 
+
+     <button onClick={handel_btn} className={btnClass}>
+            <span>Issue</span>
+            <span className="text-gray-400 group-hover:text-indigo-600 transition-colors">→</span>
+          </button>
             <button onClick={handle_feedback} className={btnClass}>
             <span>Student Feedback</span>
             <span className="text-gray-400 group-hover:text-indigo-600 transition-colors">→</span>

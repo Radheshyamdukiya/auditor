@@ -6,10 +6,11 @@ import { Plus, Loader2, PlayCircle, ChevronDown, CheckCircle2 } from "lucide-rea
 const SUB_MAP = {
   "Before Exam": ["Gate Chart", "Room Chart", "Seating Plan", "Staff Attendance"],
   "During Exam": ["Exam Hall", "Invigilator Photo", "Question Paper", "Attendance Sheet"],
-  "After Exam": ["Sheet Sealing", "Packet Submission", "Hall Clearance", "Final Report"]
+  "After Exam": ["Sheet Sealing", "Packet Submission", "Hall Clearance", "Final Report"],
+  "Issue": ["Upload Proof"]
 };
 
-function Video({ title }) {
+function Video({ title, overrideSub }) {
   const [open, setOpen] = useState(false);
   const [activeSub, setActiveSub] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -20,6 +21,12 @@ function Video({ title }) {
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
+
+    if (title === "Issue" && !overrideSub) {
+      toast.error("Please enter description first");
+      return;
+    }
+
     setUploading(true);
     const newPreviews = [];
     const mediaUrls = [];
@@ -36,9 +43,16 @@ function Video({ title }) {
         mediaUrls.push(res.data.secure_url);
         newPreviews.push({ url: res.data.secure_url, type });
       }));
+
+      // Exact matching with your backend keys in image_02badd.png
       await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { 
-        mediaUrls, title, Sub_title: activeSub, City: userData?.City, Date: userData?.ExamDate 
+        mediaUrls, 
+        title, 
+        Sub_title: title === "Issue" ? overrideSub : activeSub, 
+        City: userData?.City, 
+        Date: userData?.ExamDate 
       }, { withCredentials: true });
+
       setPreviews(prev => ({ ...prev, [activeSub]: [...(prev[activeSub] || []), ...newPreviews] }));
       toast.success("Uploaded");
     } catch (err) {
@@ -59,7 +73,7 @@ function Video({ title }) {
         className="flex items-center justify-between p-3.5 cursor-pointer hover:bg-gray-50 transition-colors"
       >
         <div className="flex items-center gap-2">
-          <span className="font-bold text-gray-800 text-sm sm:text-base">{title}</span>
+          <span className="font-bold text-gray-800 text-sm sm:text-base">{title === "Issue" ? "Issue Proof" : title}</span>
           {hasAnyPreview && <CheckCircle2 size={16} className="text-green-500" />}
         </div>
         <ChevronDown size={18} className={`transition-transform duration-300 text-gray-400 ${open ? "rotate-180" : ""}`} />
@@ -80,7 +94,7 @@ function Video({ title }) {
                       isDone ? "bg-green-50 border-green-200 text-green-700" : "bg-white border-gray-200 text-gray-600 shadow-sm"
                     }`}
                   >
-                    <span className="truncate pr-2">{s}</span>
+                    <span className="truncate pr-2">{title === "Issue" ? "Tap to Upload Proof" : s}</span>
                     <div className="shrink-0">
                       {uploading && activeSub === s ? <Loader2 className="animate-spin text-indigo-600" size={16} /> : 
                        isDone ? <CheckCircle2 size={16} className="text-green-600" /> : <Plus size={16} className="text-gray-400" />}
