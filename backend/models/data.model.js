@@ -12,22 +12,22 @@ const data_save = new mongoose.Schema({
       required: true
     }
   ],
-title:{
-type:String,
-required:true
-},
-Sub_title:{
-type:String,
-required:true
-},
-City:{
-  type:String,
-  required:true,
-},
-Date:{
- type:Date,
- required:true,
-},
+  title: {
+    type: String,
+    required: true
+  },
+  Sub_title: {
+    type: String,
+    required: true
+  },
+  City: {
+    type: String,
+    required: true,
+  },
+  Date: {
+    type: Date,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now

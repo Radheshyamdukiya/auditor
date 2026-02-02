@@ -25,7 +25,9 @@ const user_list=require('./routes/get_user_list.route');
 const download=require('./routes/download.route');
 const user_data_upload=require('./routes/admin.user.data.upload.routes')
 const student_feedback=require('./routes/student.feedback.route.js');
+const timing_submit=require("./routes/time.update.route.js");
 app.use('/user',login);
+app.use('/user',timing_submit);
 app.use('/user' ,upload);
 app.use('/user',data);
 app.use('/user',student_feedback);

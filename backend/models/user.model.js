@@ -31,8 +31,16 @@ const user_schema=new mongoose.Schema({
       Number:{
         required:true,
         type:String,
+    },
+    Auditor_Reporting_Time:{
+       type:String,
+    },
+     Student_Entry_Time:{
+       type:String,
+    },
+    Exam_Starting_Time:{
+        type:String,
     }
-    
 })
 const user=mongoose.model('user',user_schema);
 module.exports=user;

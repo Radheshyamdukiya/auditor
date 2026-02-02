@@ -26,17 +26,16 @@ const verfy_user = async (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.PASS);
-
        
-        const cur_user = await User.findById(decoded.id).select("name") || await admin.findById(decoded.id).select('name');
+        const cur_user = await User.findById(decoded.id).select("name email") || await admin.findById(decoded.id).select('name email');
 
         if (!cur_user) {
             return res.status(401).json({
                 ok: false,
                 message: "User not found in middleware"
-            });
+            });S
         }
-        req.user = cur_user.name;
+        req.user = {name:cur_user.name,email:cur_user.email};
         next();
     } catch (err) {
         return res.status(401).json({

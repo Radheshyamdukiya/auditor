@@ -1,7 +1,8 @@
 import UploadSection from "../usection";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import UserInfo from "../user_info";
-
+import axios from "axios"
+import toast from "react-hot-toast";
 function General() {
   const [timing, settiming] = useState({
     Auditor: "",
@@ -11,15 +12,35 @@ function General() {
 
   const [showbtn, setshowbtn] = useState(true);
 
+const data=JSON.parse(localStorage.getItem('data'));
+useEffect(()=>{
+   if(data.Auditor_Reporting_Time &&  data.Student_Entry_Time && data.Exam_Starting_Time ){
+   setshowbtn(false);
+   }
+},[data])
   const handleonchage = (e) => {
     const name = e.target.name;
     settiming((prev) => ({ ...prev, [name]: e.target.value }));
   }
 
-  function handlesubmit(e) {
+ async function handlesubmit(e) {
     e.preventDefault();
     setshowbtn(false);
-    console.log(timing);
+   try{
+  console.log("hellow");
+     const res=await axios.post(`${import.meta.env.VITE_API_URL}/user/timing-submit`,timing,{withCredentials:true});
+     if(res.data.ok){
+      toast.success("Date Updated")
+      localStorage.setItem("data",JSON.stringify(res.data.data));
+     }
+   
+
+
+   }
+   catch(err){
+    console.log(err);
+   }
+    
   }
 
   return (
@@ -44,6 +65,7 @@ function General() {
               <input 
                 type="time" 
                 name="Auditor" 
+                value={data.Auditor_Reporting_Time}
                 className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3.5 text-sm font-bold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all outline-none" 
                 onChange={handleonchage} 
                 required 
@@ -57,6 +79,7 @@ function General() {
               <input 
                 type="time" 
                 name="Student" 
+                value={data.Student_Entry_Time}
                 className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3.5 text-sm font-bold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all outline-none" 
                 onChange={handleonchage} 
                 required 
@@ -70,6 +93,7 @@ function General() {
               <input 
                 type="time" 
                 name="Exam" 
+                value={data.Exam_Starting_Time}
                 className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-3.5 text-sm font-bold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all outline-none" 
                 onChange={handleonchage} 
                 required 
@@ -79,7 +103,7 @@ function General() {
 
           <button 
             type="submit" 
-            disabled={!showbtn}
+         disabled={!showbtn}
             className={`w-full py-4 rounded-2xl font-black text-sm uppercase tracking-widest transition-all active:scale-[0.98] shadow-lg ${
               showbtn 
                 ? "bg-indigo-600 text-white shadow-indigo-200 hover:bg-indigo-700" 
