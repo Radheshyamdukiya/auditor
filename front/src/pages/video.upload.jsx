@@ -8,7 +8,7 @@ const SUB_MAP = {
   "During Exam": ["Exam Hall", "Invigilator Photo", "Question Paper", "Attendance Sheet"],
   "After Exam": ["Sheet Sealing", "Packet Submission", "Hall Clearance", "Final Report"],
   "Issue": ["Upload Proof"],
-   "CA": ["Upload Proof"]
+   "CA review": ["Upload Proof"]
 };
 
 function Video({ title, overrideSub }) {
