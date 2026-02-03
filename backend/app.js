@@ -27,6 +27,9 @@ const user_data_upload=require('./routes/admin.user.data.upload.routes')
 const student_feedback=require('./routes/student.feedback.route.js');
 const timing_submit=require("./routes/time.update.route.js");
 const all_data=require("./routes/get_all_user_data..route.js");
+app.get('/', (req, res) => {
+  res.status(200).send("Server is Up and Running!");
+});
 app.use('/user',login);
 app.use('/user',timing_submit);
 app.use('/user' ,upload);
