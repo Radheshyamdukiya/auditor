@@ -31,7 +31,7 @@ function Issue() {
             <label className="block text-[10px] font-black text-gray-400 uppercase tracking-wider ml-1">
               Proof (Photo/Video)
             </label>
-            {/* title="Issue" and overrideSub will send description to backend as Sub_title */}
+           
             <Video title="Issue" overrideSub={description} />
           </div>
         </div>

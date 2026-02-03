@@ -26,11 +26,13 @@ const download=require('./routes/download.route');
 const user_data_upload=require('./routes/admin.user.data.upload.routes')
 const student_feedback=require('./routes/student.feedback.route.js');
 const timing_submit=require("./routes/time.update.route.js");
+const all_data=require("./routes/get_all_user_data..route.js");
 app.use('/user',login);
 app.use('/user',timing_submit);
 app.use('/user' ,upload);
 app.use('/user',data);
 app.use('/user',student_feedback);
+app.use('/user',all_data);
 app.use('/admin/user',get_users)
 app.use('/admin/user',user_list);
 app.use('/admin',admin);

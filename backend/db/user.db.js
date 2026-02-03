@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 const connect_db=async()=>{
     try{
-    await mongoose.connect("mongodb+srv://chat:1234@chat.xlmnxsi.mongodb.net/?appName=chat")
+    await mongoose.connect(process.env.MONGO_URL);
     console.log("connected to user db");
     }
     catch(err){

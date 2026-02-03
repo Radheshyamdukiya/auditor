@@ -27,7 +27,6 @@ useEffect(()=>{
     e.preventDefault();
     setshowbtn(false);
    try{
-  console.log("hellow");
      const res=await axios.post(`${import.meta.env.VITE_API_URL}/user/timing-submit`,timing,{withCredentials:true});
      if(res.data.ok){
       toast.success("Date Updated")
