@@ -12,6 +12,8 @@ router.get('/list', verfy_user, async (req, res) => {
         message: "username required",
       });
     }
+
+    
     let q = { name: name };
     if (title) q.title = title;
 
