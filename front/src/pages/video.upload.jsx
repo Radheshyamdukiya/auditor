@@ -45,7 +45,6 @@ function Video({ title, overrideSub }) {
         newPreviews.push({ url: res.data.secure_url, type });
       }));
 
-      // Exact matching with your backend keys in image_02badd.png
       await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { 
         mediaUrls, 
         title, 

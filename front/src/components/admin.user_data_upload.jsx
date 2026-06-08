@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Upload, Loader2, FileSpreadsheet, CheckCircle } from "lucide-react";
+import { Upload, Loader2, FileSpreadsheet, CheckCircle, Download } from "lucide-react";
 
 function User_Data_Upload() {
     const [file, setfile] = useState(null);
@@ -47,7 +47,8 @@ function User_Data_Upload() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                {/* Added flex-wrap for better mobile responsiveness */}
+                <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
                     
                     <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-lg border border-gray-100 flex-1 sm:flex-none">
                         <Upload 
@@ -77,23 +78,39 @@ function User_Data_Upload() {
                         </div>
                     </div>
 
-                    {!loading ? (
-                        <button 
-                            onClick={submitFile} 
-                            disabled={!file}
-                            className={`
-                                py-2 px-4 text-sm font-semibold text-white rounded-lg transition-all shadow-sm flex-shrink-0
-                                ${file ? "bg-blue-600 hover:bg-blue-700 active:scale-95" : "bg-gray-300 cursor-not-allowed"}
-                            `}
+                    {/* Action Buttons Group */}
+                    <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                        
+                        {/* Download Template Button */}
+                        <a 
+                            href="/template.csv" 
+                            download="template.csv" 
+                            className="flex items-center gap-2 py-2 px-3 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex-shrink-0"
                         >
-                            Upload
-                        </button>
-                    ) : (
-                        <button disabled className="py-2 px-4 bg-blue-400 text-white text-sm font-semibold rounded-lg flex items-center gap-2 cursor-wait flex-shrink-0">
-                            <Loader2 size={16} className="animate-spin" />
-                            Wait...
-                        </button>
-                    )}
+                            <Download size={16} />
+                            {/* Hidden on very small screens to save space */}
+                            <span className="hidden sm:inline">Template</span>
+                        </a>
+
+                        {!loading ? (
+                            <button 
+                                onClick={submitFile} 
+                                disabled={!file}
+                                className={`
+                                    py-2 px-4 text-sm font-semibold text-white rounded-lg transition-all shadow-sm flex-shrink-0
+                                    ${file ? "bg-blue-600 hover:bg-blue-700 active:scale-95" : "bg-gray-300 cursor-not-allowed"}
+                                `}
+                            >
+                                Upload
+                            </button>
+                        ) : (
+                            <button disabled className="py-2 px-4 bg-blue-400 text-white text-sm font-semibold rounded-lg flex items-center gap-2 cursor-wait flex-shrink-0">
+                                <Loader2 size={16} className="animate-spin" />
+                                Wait...
+                            </button>
+                        )}
+                    </div>
+
                 </div>
             </div>
         </div>
