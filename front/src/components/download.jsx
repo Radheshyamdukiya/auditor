@@ -1,26 +1,19 @@
 import axios from "axios";
 import toast from "react-hot-toast"
-function Download({date,city}) {
+
+function Download({ date, city, center }) {
   const handleDownload = async () => {
     try {
-      console.log(city,date);
-      if(!city && !date){
-         toast.error("please select either city or date")
-         return
-      }
+      console.log("Selected Filters:", city, date, center);
       
-
-
-
-const response = await axios.get(
-  `${import.meta.env.VITE_API_URL}/admin/download-users`,
-  {
-    responseType: 'blob',
-    withCredentials: true,
-    params:{date,city}
-  }
-);
-
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/admin/download-users`,
+        {
+          responseType: 'blob',
+          withCredentials: true,
+          params: { date, city, center } 
+        }
+      );
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -30,6 +23,7 @@ const response = await axios.get(
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
+      
     } catch (error) {
       console.error("Download fail!", error);
       alert("Download nahi ho paya! or No Data Found");

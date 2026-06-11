@@ -18,7 +18,7 @@ function Video({ title, overrideSub }) {
   const [previews, setPreviews] = useState({});
   const fileRef = useRef(null);
   const userData = JSON.parse(localStorage.getItem("data"));
-
+  console.log(userData);
   const handleFileChange = async (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
@@ -44,12 +44,13 @@ function Video({ title, overrideSub }) {
         mediaUrls.push(res.data.secure_url);
         newPreviews.push({ url: res.data.secure_url, type });
       }));
-
+      console.log(userData.Centercode);
       await axios.post(`${import.meta.env.VITE_API_URL}/user/save-media`, { 
         mediaUrls, 
         title, 
         Sub_title: title === "Issue" ? overrideSub : activeSub, 
         City: userData?.City, 
+        Centercode:userData?.Centercode,
         Date: userData?.ExamDate 
       }, { withCredentials: true });
 

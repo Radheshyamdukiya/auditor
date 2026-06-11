@@ -24,6 +24,10 @@ const data_save = new mongoose.Schema({
     type: String,
     required: true,
   },
+   Centercode:{
+      type: String,
+     required: true,
+  },
   Date: {
     type: Date,
     required: true,

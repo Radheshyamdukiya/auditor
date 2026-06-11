@@ -2,7 +2,7 @@ const express = require("express");
 const User = require('../models/user.model');
 const { set_user } = require('../middleware/user.auth');
 const router = express.Router();
-
+const city_list=require("../models/city_list");
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -46,6 +46,12 @@ router.post('/login', async (req, res) => {
        maxAge: 1000*24*60*60,
     });
  const { password:DbPassword, ...UserData } = login_user.toObject();
+    const code=UserData.Centercode;
+    const cityData=await city_list.findOne({CenterCode:code});
+    UserData["ExamCenter"]=cityData.CentreName;
+    UserData["State"]=cityData.Status;
+    UserData["City"]=cityData.City;
+
     return res.status(200).json({
       ok: true,
       message: "login succesfully",

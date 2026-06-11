@@ -16,7 +16,7 @@ router.get('/list', verfy_user, async (req, res) => {
     
     let q = { name: name };
     if (title) q.title = title;
-
+console.log(q);
     const users = await Url.find(q).lean(); 
        
     if (!users || users.length === 0) {

@@ -16,18 +16,10 @@ const user_schema=new mongoose.Schema({
         required:true,
         type:Date,
     },
-      ExamCenter:{
+      Centercode:{
         required:true,
         type:String,
-    },
-      State:{
-        required:true,
-        type:String,
-    },
-     City:{
-        required:true,
-        type:String,
-    },
+    }, 
       Number:{
         required:true,
         type:String,

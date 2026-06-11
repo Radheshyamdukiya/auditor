@@ -4,7 +4,8 @@ const Url_Model=require('../models/data.model');
 const {verfy_user}=require('../middleware/user.auth');
 
 router.post('/save-media' ,verfy_user , async(req, res) => {
-   const {mediaUrls,title,City,Date,Sub_title}=req.body;
+   const {mediaUrls,title,City,Date,Sub_title, Centercode}=req.body;
+   console.log(Centercode);
    const {name}=req.user;
    const urls = Array.isArray(mediaUrls) ? mediaUrls : [mediaUrls];
    console.log(City,Date);
@@ -12,14 +13,17 @@ router.post('/save-media' ,verfy_user , async(req, res) => {
     res.status(401).json({ok:false,message:"please upload the file frist"});
    }
    try{
-     await Url_Model.create({
+    const user= await Url_Model.create({
              name,
              urls,
              title,
              Sub_title,
              City,
+             Centercode,
              Date
       })
+      console.log("data is saved");
+      console.log(user);
        res.status(201).json({ok:true,message:"image uploaded"});
    }
    catch(err){

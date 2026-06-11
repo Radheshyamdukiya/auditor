@@ -7,15 +7,12 @@ const { verfy_user } = require('../middleware/user.auth');
 
 router.get('/download-users', verfy_user, async (req, res) => {
     try {
-        const { city, date } = req.query;
+        const { city, date, center } = req.query;
         let query = {};
 
-        if ((!city || !city.trim()) && (!date || !date.trim())) {
-            return res.status(400).json({ ok: false, message: "Please provide at least City or Date" });
-        }
-
         if (city && city.trim()) {
-            query.City = { $regex: new RegExp(`^${city}$`, 'i') };
+            const safeCity = city.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            query.City = { $regex: safeCity.replace(/\s+/g, '.*'), $options: 'i' };
         }
 
         if (date && date.trim()) {
@@ -29,24 +26,36 @@ router.get('/download-users', verfy_user, async (req, res) => {
                 const e = new Date(year, month - 1, day, 23, 59, 59);
 
                 if (!isNaN(s.getTime())) {
-                    query.Date = { $gte: s, $lte: e };
+                    query.ExamDate = { $gte: s, $lte: e };
                 }
             }
         }
 
-     
-        const urlData = await Url.find(query).lean();
-
-        if (!urlData || urlData.length === 0) {
-            return res.status(404).json({ ok: false, message: "No data found" });
+        if (center && center.trim()) {
+            const safeCenter = center.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            query.ExamCenter = { $regex: safeCenter.replace(/\s+/g, '.*'), $options: 'i' };
         }
 
+        console.log("--- DEBUG INFO ---");
+        console.log("Incoming Query Params:", req.query);
+        console.log("MongoDB Query Object:", query);
+
+        // 🔥 THE FIX: Mongoose Schema ko bypass karke Native MongoDB Driver use kar rahe hain
+        // Agar DB me data hai, toh Schema fail nahi kar payega ab
+        const urlData = await Url.collection.find(query).toArray();
+        
+        console.log("Data found length:", urlData.length);
+        console.log("------------------");
+
+        if (!urlData || urlData.length === 0) {
+            return res.status(404).json({ ok: false, message: "No data found matching these filters." });
+        }
+
+        // --- BAKI TERA PURANA CODE EXACT SAME ---
         const auditorNames = urlData.map(u => u.name);
         const feedbackData = await student_feedback.find({
             auditer_name: { $in: auditorNames }
         }).lean();
-
-
         
         const groupedMap = new Map();
 
@@ -54,6 +63,7 @@ router.get('/download-users', verfy_user, async (req, res) => {
             if (!groupedMap.has(u.name)) {
                 groupedMap.set(u.name, {
                     city: u.City,
+                    center: u.ExamCenter || '', 
                     createdAt: u.createdAt,
                     tasks: [],      
                     feedbacks: []   
@@ -74,8 +84,6 @@ router.get('/download-users', verfy_user, async (req, res) => {
                 groupedMap.get(f.auditer_name).feedbacks.push(f);
             }
         });
-
-
        
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Merged Data');
@@ -83,12 +91,10 @@ router.get('/download-users', verfy_user, async (req, res) => {
         worksheet.columns = [
             { header: 'Auditor Name', key: 'auditor', width: 20 },
             { header: 'City', key: 'city', width: 15 },
-            
-            
+            { header: 'Exam Center', key: 'center', width: 25 }, 
             { header: 'Exam Title', key: 'title', width: 25 },
-            { header: 'Sub Title', key: 'subtitle', width: 20 }, // <--- NEW COLUMN
+            { header: 'Sub Title', key: 'subtitle', width: 20 }, 
             { header: 'URL', key: 'url', width: 40 },
-            
             { header: 'Student Name', key: 'student', width: 20 },
             { header: 'Reg No', key: 'reg', width: 15 },
             { header: 'Mobile', key: 'mobile', width: 15 },
@@ -97,7 +103,6 @@ router.get('/download-users', verfy_user, async (req, res) => {
             { header: 'Created At', key: 'created', width: 20 }
         ];
 
-       
         groupedMap.forEach((data, auditorName) => {
             const tasks = data.tasks;
             const feedbacks = data.feedbacks;
@@ -107,7 +112,6 @@ router.get('/download-users', verfy_user, async (req, res) => {
             for (let i = 0; i < maxRows; i++) {
                 
                 const isFirstRow = (i === 0);
-
                 
                 const taskObj = tasks[i] || {}; 
                 const titleVal = taskObj.title || '';
@@ -130,17 +134,15 @@ router.get('/download-users', verfy_user, async (req, res) => {
                 worksheet.addRow({
                     auditor: isFirstRow ? auditorName : '',
                     city: isFirstRow ? data.city : '',
-                    
+                    center: isFirstRow ? data.center : '', 
                     title: titleVal,
-                    subtitle: subtitleVal, // <--- Put Value in Row
+                    subtitle: subtitleVal, 
                     url: urlVal,
-                    
                     student: studentVal,
                     reg: regVal,
                     mobile: mobileVal,
                     suggestion: suggVal,
                     ratings: ratingStr,
-                    
                     created: isFirstRow ? (data.createdAt ? data.createdAt.toLocaleString() : '') : ''
                 });
             }

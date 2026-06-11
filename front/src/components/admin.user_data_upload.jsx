@@ -47,7 +47,6 @@ function User_Data_Upload() {
                     </div>
                 </div>
 
-                {/* Added flex-wrap for better mobile responsiveness */}
                 <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
                     
                     <div className="flex items-center gap-2 bg-gray-50 p-1.5 rounded-lg border border-gray-100 flex-1 sm:flex-none">
@@ -78,17 +77,14 @@ function User_Data_Upload() {
                         </div>
                     </div>
 
-                    {/* Action Buttons Group */}
                     <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
                         
-                        {/* Download Template Button */}
                         <a 
                             href="/template.csv" 
                             download="template.csv" 
                             className="flex items-center gap-2 py-2 px-3 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex-shrink-0"
                         >
                             <Download size={16} />
-                            {/* Hidden on very small screens to save space */}
                             <span className="hidden sm:inline">Template</span>
                         </a>
 
